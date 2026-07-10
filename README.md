@@ -25,32 +25,29 @@ Built with FastAPI, PostgreSQL, SQLAlchemy, Alembic, Docker Compose and Redis.
 
 ## Setup and run
 
+
 1. Clone the repository:
-  
+```bash
+   git clone <repo-url>
    cd reading-list-api
-   ```
+```
 
 2. Copy the environment template:
-   ```bash
+```bash
    cp .env.example .env
-   ```
+```
    Default values work out of the box for local development. Change `SECRET_KEY` to
    a random string for anything beyond local testing.
 
 3. Start the full stack:
-   ```bash
+```bash
    docker compose up --build
-   ```
+```
    This builds the API image, starts PostgreSQL and Redis, waits for Postgres to pass
-   its healthcheck, and starts the API on port 8000.
+   its healthcheck, runs database migrations automatically, and starts the API on
+   port 8000. No separate migration step is needed.
 
-4. Run database migrations (in a separate terminal, with the stack running):
-   ```bash
-   docker compose exec api alembic upgrade head
-   ```
-   
-
-5. Open the interactive API docs:
+4. Open the interactive API docs:
    ```
    http://localhost:8000/docs
    ```
@@ -197,7 +194,7 @@ curl http://localhost:8000/exports/<job_id>/download -H "Authorization: Bearer <
 
 ## Running tests
 
-Tests run against a **separate test database**
+Tests run against a separate test database
 
 1. Create the test database (once):
    ```bash
@@ -206,18 +203,29 @@ Tests run against a **separate test database**
 
 2. Ensure `TEST_DATABASE_URL` is set in `.env` (see `.env.example`).
 
-3. From a local Python venv with `requirements.txt` installed:
-   ```bash
-   pytest -v
-   ```
+3.3. Create and activate a virtual environment, then install dependencies:
+```bash
+   python -m venv .venv
 
+   # Windows
+   .venv\Scripts\Activate.ps1
+   # macOS/Linux
+   source .venv/bin/activate
+
+   pip install -r requirements.txt
+```
+
+4. Run the tests:
+```bash
+   pytest -v
+```
 Test coverage includes: registration/login, cross-user authorization isolation,
 invalid input / duplicate-email constraint handling, and the full export job
 lifecycle — plus additional cases beyond the required minimum of 4.
 
 ## Known limitations
 
-- **Export jobs run in-process** via FastAPI `BackgroundTasks`. If the server process
+- - **Export jobs run in-process** via FastAPI `BackgroundTasks`. If the server process
   crashes or restarts while a job is `processing`, that job is permanently stuck and
   will not be retried automatically.
 - **No password reset / change flow** — out of scope for this assessment; only
