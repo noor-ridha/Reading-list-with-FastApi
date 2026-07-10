@@ -1,13 +1,13 @@
 # TESTING.md
 
-Automated tests (pytest) cover the four required categories and are run via `pytest -v`
-— see README.md "Running tests". This document covers manual verification, including
+Automated tests (pytest) cover the four required categories and are run via `pytest -v`.
+This document covers manual verification, including
 the six required robustness cases from the task spec , with real inputs
 and observed outputs captured during development.
 
 ## Automated test summary
 
-```
+
 
 tests/test_auth.py::test_register_success PASSED
 tests/test_auth.py::test_login_success PASSED
