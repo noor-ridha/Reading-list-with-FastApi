@@ -14,3 +14,4 @@ pytest
 httpx
 ruff
 mypy
+strawberry-graphql[fastapi]
