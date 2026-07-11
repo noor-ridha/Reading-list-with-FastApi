@@ -293,4 +293,4 @@ mutation {
 
 ## AI Tools Used
 
-Claude Opus + Sonnet 5: Co-thinking, enhancing project structure, code and documatations.
+Claude Opus + Sonnet 5: Co-thinking, enhancing project structure, enhancing the code and the documatations.
