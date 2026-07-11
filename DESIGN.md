@@ -99,9 +99,20 @@ client. The client polls `GET /exports/{job_id}` for status and calls
 
 - Only `email` and `password` are required for registration.
 
+
 ## Bonus: Redis caching
 
-Implemented for `GET /lists/{list_id}`only.
+Implemented for `GET /lists/{list_id}` only.
+
+**Key scheme:** `list:{owner_id}:{list_id}` — namespaced by owner, so a cache hit only
+ever matches the exact (owner, list) pair that was already authorized. The cache can't
+become an authorization bypass; ownership is still checked on every miss.
+
+**Invalidation:** delete-on-write. `PATCH`/`DELETE` on a list clear its cache key
+immediately, so no stale reads after a change. A 300s TTL acts as a backup safety net.
+
+**Verified manually:** GET populates the cache → PATCH clears it → next GET returns the
+updated value and repopulates the cache.
 
 ## Bonus: GraphQL 
 
