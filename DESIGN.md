@@ -101,4 +101,17 @@ client. The client polls `GET /exports/{job_id}` for status and calls
 
 ## Bonus: Redis caching
 
-Implemented for `GET /lists/{list_id}`.
+Implemented for `GET /lists/{list_id}`only.
+
+## Bonus: GraphQL 
+
+Limited interface is mounted at `/graphql`, alongside the full REST API —
+REST remains the primary, complete interface.
+
+**Scope 
+- Queries: `myLists` (paginated), `list(id)` (single list with nested items in one
+  round trip), `exportJob(id)`
+- Mutations: `createList`, `addItem`
+- Not exposed via GraphQL: update/delete operations, export triggering, download. REST
+  remains the interface for the full CRUD + export surface.
+

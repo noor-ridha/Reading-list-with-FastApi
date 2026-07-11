@@ -10,11 +10,11 @@ Built with FastAPI, PostgreSQL, SQLAlchemy, Alembic, Docker Compose and Redis.
 - Python 3.11+, FastAPI
 - PostgreSQL 16 — primary data store
 - SQLAlchemy 2.0 (ORM) + Alembic (migrations)
-- Redis 7 — used for caching single-resource list reads (see "Bonus" section below and
-  DESIGN.md for the full design)
+- Redis 7 — used for caching single-resource list reads 
 - JWT authentication (python-jose + passlib/bcrypt)
 - pytest — automated tests
 - Docker + Docker Compose
+- Strawberry GraphQL
 
 ## Prerequisites
 
@@ -203,7 +203,7 @@ Tests run against a separate test database
 
 2. Ensure `TEST_DATABASE_URL` is set in `.env` (see `.env.example`).
 
-3.3. Create and activate a virtual environment, then install dependencies:
+3. Create and activate a virtual environment, then install dependencies:
 ```bash
    python -m venv .venv
 
@@ -248,6 +248,49 @@ docker exec -it reading_list_redis redis-cli KEYS "list:*"
 docker exec -it reading_list_redis redis-cli GET "list:<owner_id>:<list_id>"
 ```
 
+## Bonus: GraphQL
+
+A limited GraphQL interface is available at `http://localhost:8000/graphql`, alongside
+the full REST API. It intentionally covers a smaller, read-oriented surface — REST
+remains the complete interface.
+
+**Available operations:**
+- `myLists(limit, offset)` — paginated list of your lists
+- `list(id)` — a single list with its items nested in one request
+- `exportJob(id)` — export job status
+- `createList(name, description)` — mutation
+- `addItem(listId, title, status)` — mutation
+
+**Auth:** same Bearer token as REST, passed via an `Authorization: Bearer <token>`
+header in the GraphQL request (set this in GraphiQL's "Headers" panel when testing
+interactively at `/graphql`).
+
+**Example query** (fetches a list and its items in a single round trip, unlike REST
+which needs two calls for the same data):
+```graphql
+
+query {
+  list(id: "your-list-id") {
+    name
+    items {
+      title
+      status
+    }
+  }
+}
+```
+
+**Example mutation:**
+```graphql
+mutation {
+  createList(name: "Sci-Fi Favorites") {
+    id
+    name
+  }
+}
+```
+
+
 ## AI Tools Used
 
-Claude Opus + Sonnet 5
+Claude Opus + Sonnet 5: Co-thinking, enhancing project structure, code and documatations.
