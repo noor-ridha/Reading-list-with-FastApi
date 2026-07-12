@@ -19,7 +19,7 @@ Built with FastAPI, PostgreSQL, SQLAlchemy, Alembic, Docker Compose and Redis.
 ## Prerequisites
 
 - Docker Desktop (with Docker Compose)
-- That's it — Python/Postgres/Redis all run inside containers, no local installs required
+- Python/Postgres/Redis all run inside containers, no local installs required
   to run the API itself. (A local Python venv is only needed if you want to run the
   automated test suite from the host — see "Running tests" below.)
 
@@ -28,7 +28,7 @@ Built with FastAPI, PostgreSQL, SQLAlchemy, Alembic, Docker Compose and Redis.
 
 1. Clone the repository:
 ```bash
-   git clone <repo-url>
+   git clone https://github.com/noor-ridha/Reading-list-with-FastApi
    cd reading-list-api
 ```
 
@@ -84,7 +84,7 @@ See `.env.example` for the full list with placeholder values. Summary:
 ## Authentication
 
 Bearer token via `Authorization: Bearer <token>` header — not cookies (this is an
-API-only service; see DESIGN.md for the reasoning).
+API-only service;
 
 ### Register
 ```
